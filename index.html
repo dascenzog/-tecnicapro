@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TecnicaPro · Allenamento Tecnico U16</title>
+<style>
+:root{
+  --bg:#f4f7f6; --card:#ffffff; --text:#13201c; --muted:#647873;
+  --accent:#0fae6e; --accent2:#0a8e5b; --accent-soft:#e3f7ee;
+  --warn:#f5a623; --danger:#e6553a; --border:#e3e8e6;
+  --radius:16px; --shadow:0 4px 16px rgba(20,40,35,.06);
+  --blue:#2f6fed;
+}
+[data-theme="dark"]{
+  --bg:#0d1412; --card:#161f1c; --text:#eef3f1; --muted:#9bb0aa;
+  --accent:#22d98a; --accent2:#19b876; --accent-soft:#16332a;
+  --border:#26332e; --shadow:0 4px 20px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;
+  background:var(--bg); color:var(--text);
+  transition:background .25s,color .25s;
+  padding-bottom:70px;
+}
+a{color:inherit;text-decoration:none;}
+.container{max-width:520px; margin:0 auto; padding:14px 16px 24px;}
+@media(min-width:760px){ .container{max-width:920px;} }
+
+/* TOP BAR */
+.topbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 16px; position:sticky; top:0; z-index:50;
+  background:var(--bg); border-bottom:1px solid var(--border);
+}
+.brand{display:flex; align-items:center; gap:8px; font-weight:800; font-size:1.15rem;}
+.brand .logo{
+  width:32px;height:32px;border-radius:9px;
+  background:linear-gradient(135deg,var(--accent),var(--blue));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;
+}
+.icon-btn{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--border);
+  background:var(--card); display:flex;align-items:center;justify-content:center;
+  cursor:pointer; font-size:1.1rem; color:var(--text);
+}
+
+/* BOTTOM NAV */
+.bottomnav{
+  position:fixed; bottom:0; left:0; right:0; z-index:60;
+  background:var(--card); border-top:1px solid var(--border);
+  display:flex; justify-content:space-around; padding:6px 0 8px;
+  box-shadow:0 -2px 10px rgba(0,0,0,.05);
+}
+.navbtn{
+  display:flex; flex-direction:column; align-items:center; gap:2px;
+  font-size:.65rem; color:var(--muted); background:none; border:none;
+  cursor:pointer; flex:1; padding:6px 2px; font-weight:600;
+}
+.navbtn.active{color:var(--accent);}
+.navbtn .ic{font-size:1.25rem;}
+
+/* CARDS */
+.card{
+  background:var(--card); border:1px solid var(--border); border-radius:var(--radius);
+  padding:16px; box-shadow:var(--shadow); margin-bottom:14px;
+}
+.card h3{margin-bottom:8px; font-size:1rem;}
+.row{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+.muted{color:var(--muted); font-size:.85rem;}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.grid4{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+@media(min-width:600px){.grid4{grid-template-columns:repeat(4,1fr);}}
+
+/* BUTTONS */
+.btn{
+  border:none; border-radius:12px; padding:12px 18px; font-weight:700;
+  font-size:.95rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px;
+  justify-content:center; transition:transform .1s, opacity .2s;
+}
+.btn:active{transform:scale(.97);}
+.btn-primary{background:var(--accent); color:#fff;}
+.btn-secondary{background:var(--accent-soft); color:var(--accent2);}
+.btn-outline{background:transparent; border:1px solid var(--border); color:var(--text);}
+.btn-block{width:100%;}
+.btn-sm{padding:8px 12px; font-size:.8rem; border-radius:9px;}
+.btn:disabled{opacity:.5; cursor:not-allowed;}
+
+/* BADGES */
+.badge{
+  display:inline-flex; align-items:center; gap:4px; font-size:.7rem; font-weight:700;
+  padding:3px 9px; border-radius:20px; white-space:nowrap;
+}
+.badge-done{background:var(--accent-soft); color:var(--accent2);}
+.badge-progress{background:#fff4e0; color:var(--warn);}
+.badge-todo{background:var(--border); color:var(--muted);}
+[data-theme="dark"] .badge-progress{background:#3a2c10;}
+.badge-easy{background:#e3f7ee; color:#0a8e5b;}
+.badge-medium{background:#fff4e0; color:#b07207;}
+.badge-hard{background:#fde6e2; color:#c0392b;}
+[data-theme="dark"] .badge-easy{background:#16332a;}
+[data-theme="dark"] .badge-medium{background:#3a2c10;}
+[data-theme="dark"] .badge-hard{background:#3a1a14;}
+
+/* PROGRESS BAR */
+.pbar{height:8px; border-radius:6px; background:var(--border); overflow:hidden;}
+.pbar > div{height:100%; background:linear-gradient(90deg,var(--accent),var(--blue)); transition:width .4s;}
+
+/* SKILL RING */
+.skillcard{text-align:center;}
+.ring{
+  width:64px;height:64px;border-radius:50%;margin:0 auto 8px;
+  display:flex;align-items:center;justify-content:center; font-weight:800; font-size:.95rem;
+  background:conic-gradient(var(--accent) calc(var(--p)*1%), var(--border) 0);
+  position:relative;
+}
+.ring::before{
+  content:''; position:absolute; inset:6px; border-radius:50%; background:var(--card);
+}
+.ring span{position:relative; z-index:1;}
+
+/* TABS */
+.tabs{display:flex; gap:8px; overflow-x:auto; padding-bottom:6px; margin-bottom:12px;}
+.tab{
+  flex-shrink:0; padding:8px 16px; border-radius:20px; border:1px solid var(--border);
+  background:var(--card); font-weight:700; font-size:.85rem; cursor:pointer; color:var(--muted);
+}
+.tab.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+/* DAY LIST */
+.daylist{display:flex; flex-direction:column; gap:10px;}
+.dayitem{
+  background:var(--card); border:1px solid var(--border); border-radius:14px;
+  padding:14px; display:flex; justify-content:space-between; align-items:center;
+  cursor:pointer; gap:10px;
+}
+.dayitem:hover{border-color:var(--accent);}
+.dayitem .dname{font-weight:700;}
+.dayitem .dfocus{font-size:.8rem; color:var(--muted); margin-top:2px;}
+
+/* EXERCISE BLOCK */
+.exblock{
+  border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:12px;
+  background:var(--card);
+}
+.exblock.done{border-color:var(--accent); background:var(--accent-soft);}
+.exhead{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+.exname{font-weight:800; font-size:.95rem;}
+.exmeta{font-size:.78rem; color:var(--muted); margin-top:4px;}
+.exdesc{font-size:.85rem; margin-top:8px; line-height:1.45;}
+.exfooter{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
+.videolink{font-size:.8rem; color:var(--blue); font-weight:700;}
+
+/* MODAL */
+.overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.5); display:none;
+  align-items:flex-end; justify-content:center; z-index:200;
+}
+.overlay.show{display:flex;}
+.modal{
+  background:var(--card); border-radius:18px 18px 0 0; width:100%; max-width:520px;
+  padding:20px; max-height:85vh; overflow-y:auto; animation:slideup .25s ease;
+}
+@media(min-width:760px){.overlay{align-items:center;} .modal{border-radius:18px; max-width:480px;}}
+@keyframes slideup{from{transform:translateY(40px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+.modal h3{margin-bottom:14px;}
+.rating-row{display:flex; gap:8px; margin:10px 0;}
+.rating-btn{
+  flex:1; padding:10px; border-radius:10px; border:1px solid var(--border); background:var(--card);
+  cursor:pointer; font-weight:700; font-size:.82rem; color:var(--text);
+}
+.rating-btn.sel{border-color:var(--accent); background:var(--accent-soft); color:var(--accent2);}
+.scale{display:flex; gap:6px; margin:8px 0 16px;}
+.scale button{
+  flex:1; padding:10px 0; border-radius:8px; border:1px solid var(--border); background:var(--card);
+  font-weight:700; cursor:pointer; color:var(--text);
+}
+.scale button.sel{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+/* TOAST */
+.toast{
+  position:fixed; bottom:80px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--text); color:var(--bg); padding:10px 18px; border-radius:30px;
+  font-size:.85rem; font-weight:700; opacity:0; transition:all .3s; z-index:300; pointer-events:none;
+  white-space:nowrap;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+/* WEEK STRIP */
+.weekstrip{display:flex; gap:6px; margin-bottom:14px;}
+.weekbtn{
+  flex:1; padding:10px 0; text-align:center; border-radius:10px; border:1px solid var(--border);
+  background:var(--card); font-weight:700; font-size:.8rem; cursor:pointer; color:var(--muted);
+}
+.weekbtn.active{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+h1.page-title{font-size:1.3rem; font-weight:800; margin-bottom:14px;}
+.section-title{font-size:1.05rem; font-weight:800; margin:18px 0 10px;}
+.empty{text-align:center; padding:30px 10px; color:var(--muted);}
+
+/* timer */
+.timer-display{
+  font-size:2.4rem; font-weight:800; text-align:center; margin:10px 0; font-variant-numeric:tabular-nums;
+}
+.coach-msg{
+  background:var(--accent-soft); border-radius:12px; padding:12px 14px; font-size:.85rem;
+  color:var(--accent2); margin-bottom:10px; display:flex; gap:8px; align-items:flex-start;
+}
+.coach-msg .ic{font-size:1.1rem; flex-shrink:0;}
+
+.chip{
+  display:inline-flex; align-items:center; gap:4px; font-size:.72rem; font-weight:700;
+  padding:4px 10px; border-radius:14px; background:var(--accent-soft); color:var(--accent2); margel:2px;
+  margin:2px;
+}
+.players-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:10px;}
+@media(min-width:600px){.players-grid{grid-template-columns:repeat(4,1fr);}}
+
+/* readiness */
+.readiness-row{margin-bottom:14px;}
+.readiness-row label{font-weight:700; font-size:.85rem; display:block; margin-bottom:6px;}
+
+textarea, select, input[type=text]{
+  width:100%; padding:10px; border-radius:10px; border:1px solid var(--border);
+  background:var(--bg); color:var(--text); font-family:inherit; font-size:.9rem;
+}
+.filters{display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom:10px;}
+.filters select{flex-shrink:0; min-width:120px;}
+</style>
+</head>
+<body data-theme="light">
+
+<div class="topbar">
+  <div class="brand"><div class="logo">⚽</div> TecnicaPro</div>
+  <button class="icon-btn" id="themeToggle">🌙</button>
+</div>
+
+<div class="container" id="app"></div>
+
+<div class="bottomnav">
+  <button class="navbtn active" data-page="home"><span class="ic">🏠</span>Home</button>
+  <button class="navbtn" data-page="programma"><span class="ic">📅</span>Programma</button>
+  <button class="navbtn" data-page="libreria"><span class="ic">📚</span>Esercizi</button>
+  <button class="navbtn" data-page="scheda"><span class="ic">🧑‍🦱</span>Scheda</button>
+  <button class="navbtn" data-page="progressi"><span class="ic">📈</span>Progressi</button>
+</div>
+
+<div class="overlay" id="overlay"><div class="modal" id="modalBody"></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
